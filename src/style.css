@@ -1,0 +1,22 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html,body {
+  width: 100vw;
+  height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background-color: grey;
+}
+
+#canvas-container {
+  width: 1280px;
+  height: 720px;
+  background-color: black;
+  box-shadow: 5px 5px 15px black;
+}
