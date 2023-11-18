@@ -1,15 +1,12 @@
 export class Player {
   width: number = 50;
   height: number = 25;
-  pos: {x: number, y: number};
+  pos: Vec2;
   ctx: CanvasRenderingContext2D;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
-    this.pos = {
-      x: ctx.canvas.width / 2,
-      y: ctx.canvas.height / 2
-    }
+    this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
   }
 
   draw() {
@@ -18,7 +15,12 @@ export class Player {
     this.ctx.translate(this.pos.x, this.pos.y);
     // body
     this.ctx.fillStyle = "brown";
-    this.ctx.fillRect(-this.width / 2, -this.height / 2, this.width, this.height);
+    this.ctx.fillRect(
+      -this.width / 2,
+      -this.height / 2,
+      this.width,
+      this.height
+    );
     // nose
     this.ctx.beginPath();
     this.ctx.arc(this.width / 2, 0, 5, 0, Math.PI * 2);
