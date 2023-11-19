@@ -1,4 +1,4 @@
-class Vec2 {
+export class Vec2 {
   x: number;
   y: number;
 
@@ -48,5 +48,11 @@ class Vec2 {
 
   setMag(mag: number): Vec2 {
     return this.normalize().scale(mag);
+  }
+
+  static fromAngle(angle: number, magnitude: number = 1): Vec2 {
+    const v = new Vec2(Math.cos(angle), Math.sin(angle));
+    v.scale(magnitude);
+    return v;
   }
 }
