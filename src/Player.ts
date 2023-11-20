@@ -1,4 +1,5 @@
 import { Vec2 } from "./Vec2";
+import { screenWrap } from "./utils";
 
 type Keys = {
   up: boolean;
@@ -86,7 +87,7 @@ export class Player {
     }
     this.pos.add(Vec2.scale(this.vel, dts));
     this.accel.scale(0);
-    this.screenWrap();
+    screenWrap(this, this.ctx);
   }
 
   draw(): void {
@@ -143,19 +144,5 @@ export class Player {
   private applyPropulsionForce(): void {
     const force = Vec2.fromAngle(this.rotation, this.propulsionForce);
     this.accel.add(force);
-  }
-
-  private screenWrap(): void {
-    const canvas = this.ctx.canvas;
-    if (this.pos.x > canvas.width) {
-      this.pos.x = 0;
-    } else if (this.pos.y > canvas.height) {
-      this.pos.y = 0;
-    }
-    if (this.pos.x < 0) {
-      this.pos.x = canvas.width;
-    } else if (this.pos.y < 0) {
-      this.pos.y = canvas.height;
-    }
   }
 }
