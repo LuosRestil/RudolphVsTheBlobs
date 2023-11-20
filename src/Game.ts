@@ -26,7 +26,7 @@ export class Game {
 
     this.update(dts);
     this.draw();
-  }
+  };
 
   private update(dts: number): void {
     this.player.update(dts);
@@ -43,7 +43,7 @@ export class Game {
     }
   }
 
-  private spawnEnemies() {
+  private spawnEnemies(): Enemy[] {
     let enemies = [];
     for (let i = 0; i < 3; i++) {
       enemies.push(new Enemy(this.ctx));
