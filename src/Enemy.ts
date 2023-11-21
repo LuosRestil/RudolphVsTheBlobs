@@ -1,5 +1,5 @@
 import { Vec2 } from "./Vec2";
-import { screenWrap } from "./utils";
+import { randRange, screenWrap } from "./utils";
 
 export class Enemy {
   ctx: CanvasRenderingContext2D;
@@ -12,7 +12,7 @@ export class Enemy {
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
     this.vel = Vec2.fromAngle(Math.random() * Math.PI * 2).scale(
-      Math.random() * (this.maxVel - this.minVel) + this.minVel
+      randRange(this.minVel, this.maxVel)
     );
   }
 
@@ -24,8 +24,8 @@ export class Enemy {
   draw(): void {
     const ctx = this.ctx;
     // body
-    ctx.fillStyle = 'limegreen';
-    ctx.strokeStyle = 'green';
+    ctx.fillStyle = "limegreen";
+    ctx.strokeStyle = "green";
     ctx.lineWidth = 3;
     ctx.beginPath();
     ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);

@@ -16,3 +16,7 @@ export function screenWrap(
     gameObject.pos.y = canvas.height;
   }
 }
+
+export function randRange(min: number, max: number): number {
+  return min + Math.random() * (max - min);
+}

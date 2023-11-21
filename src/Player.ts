@@ -1,9 +1,10 @@
+import { Game } from "./Game";
+import { Projectile } from "./Projectile";
 import { Vec2 } from "./Vec2";
 import { screenWrap } from "./utils";
 
 type Keys = {
   up: boolean;
-  down: boolean;
   left: boolean;
   right: boolean;
 };
@@ -15,7 +16,6 @@ export class Player {
   rotationSpeed: number = Math.PI * 2;
   keys: Keys = {
     up: false,
-    down: false,
     left: false,
     right: false,
   };
@@ -24,10 +24,13 @@ export class Player {
   accel: Vec2 = new Vec2(0, 0);
   propulsionForce: number = 1000;
   maxVel: number = 800;
+  projectileSpeed: number = 200;
   ctx: CanvasRenderingContext2D;
+  game: Game;
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(ctx: CanvasRenderingContext2D, game: Game) {
     this.ctx = ctx;
+    this.game = game;
     this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
 
     document.addEventListener("keydown", (evt) => {
@@ -36,10 +39,6 @@ export class Player {
         case "ArrowUp":
         case "w":
           this.keys.up = true;
-          break;
-        case "ArrowDown":
-        case "s":
-          this.keys.down = true;
           break;
         case "ArrowLeft":
         case "a":
@@ -50,6 +49,9 @@ export class Player {
           this.keys.right = true;
           break;
       }
+      if (!evt.repeat && (key === " " || key === "f")) {
+        this.fire();
+      }
     });
 
     document.addEventListener("keyup", (evt) => {
@@ -58,10 +60,6 @@ export class Player {
         case "ArrowUp":
         case "w":
           this.keys.up = false;
-          break;
-        case "ArrowDown":
-        case "s":
-          this.keys.down = false;
           break;
         case "ArrowLeft":
         case "a":
@@ -144,5 +142,11 @@ export class Player {
   private applyPropulsionForce(): void {
     const force = Vec2.fromAngle(this.rotation, this.propulsionForce);
     this.accel.add(force);
+  }
+
+  private fire(): void {
+    const nosePos = Vec2.fromAngle(this.rotation, this.width / 2).add(this.pos);
+    const vel = Vec2.fromAngle(this.rotation, this.projectileSpeed);
+    this.game.projectiles.push(new Projectile(this.ctx, nosePos, vel));
   }
 }
