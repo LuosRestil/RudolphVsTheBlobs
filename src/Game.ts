@@ -1,6 +1,7 @@
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
+import { circleCircleCollisionDetected } from "./utils";
 
 export class Game {
   ctx: CanvasRenderingContext2D;
@@ -20,17 +21,17 @@ export class Game {
   }
 
   private loop = (ms: number): void => {
-    console.log(this.projectiles.length);
     requestAnimationFrame(this.loop);
 
     const dt = ms - this.lastTime;
     const dts = dt / 1000;
     this.lastTime = ms;
 
-    this.removeInactive(this.projectiles);
     this.projectiles = this.projectiles.filter(projectile => projectile.isActive);
-    this.update(dts);
+    this.enemies = this.enemies.filter(enemy => enemy.isActive);
     this.draw();
+    this.update(dts);
+    this.detectCollisions();
   };
 
   private update(dts: number): void {
@@ -40,6 +41,17 @@ export class Game {
     }
     for (let projectile of this.projectiles) {
       projectile.update(dts);
+    }
+  }
+
+  private detectCollisions(): void {
+    for (let projectile of this.projectiles) {
+      for (let enemy of this.enemies) {
+        if (circleCircleCollisionDetected(projectile, enemy)) {
+          enemy.isActive = false;
+          projectile.isActive = false;
+        }
+      }
     }
   }
 
@@ -60,9 +72,5 @@ export class Game {
       enemies.push(new Enemy(this.ctx));
     }
     return enemies;
-  }
-
-  private removeInactive(items: {isActive: boolean}[]) {
-    items = items.filter(item => item.isActive);
   }
 }

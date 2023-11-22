@@ -20,3 +20,11 @@ export function screenWrap(
 export function randRange(min: number, max: number): number {
   return min + Math.random() * (max - min);
 }
+
+export function circleCircleCollisionDetected(
+  circle1: { pos: Vec2; radius: number },
+  circle2: { pos: Vec2; radius: number }
+): boolean {
+  const distance = Vec2.dist(circle1.pos, circle2.pos);
+  return distance <= circle1.radius + circle2.radius;
+}

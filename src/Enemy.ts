@@ -8,6 +8,7 @@ export class Enemy {
   vel: Vec2;
   minVel: number = 20;
   maxVel: number = 120;
+  isActive: boolean = true;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
