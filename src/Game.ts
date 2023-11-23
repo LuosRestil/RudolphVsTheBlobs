@@ -1,7 +1,10 @@
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
-import { circleCircleCollisionDetected } from "./utils";
+import {
+  circleCircleCollisionDetected,
+  obbCircleCollisionDetected,
+} from "./utils";
 
 export class Game {
   ctx: CanvasRenderingContext2D;
@@ -9,6 +12,7 @@ export class Game {
   player: Player;
   enemies: Enemy[];
   projectiles: Projectile[] = [];
+  bgcolor: string = "black";
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -27,8 +31,10 @@ export class Game {
     const dts = dt / 1000;
     this.lastTime = ms;
 
-    this.projectiles = this.projectiles.filter(projectile => projectile.isActive);
-    this.enemies = this.enemies.filter(enemy => enemy.isActive);
+    this.projectiles = this.projectiles.filter(
+      (projectile) => projectile.isActive
+    );
+    this.enemies = this.enemies.filter((enemy) => enemy.isActive);
     this.draw();
     this.update(dts);
     this.detectCollisions();
@@ -53,10 +59,26 @@ export class Game {
         }
       }
     }
+
+    let collisionDetected = false;
+    for (let enemy of this.enemies) {
+      if (obbCircleCollisionDetected(this.player, enemy)) {
+        collisionDetected = true;
+        break;
+      }
+    }
+    if (collisionDetected) {
+      this.bgcolor = "red";
+      // TODO destroy player, handle game over
+    } else {
+      this.bgcolor = "black";
+    }
   }
 
   private draw(): void {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    this.ctx.fillStyle = this.bgcolor;
+    this.ctx.fillRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    // this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     for (let enemy of this.enemies) {
       enemy.draw();
     }
