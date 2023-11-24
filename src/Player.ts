@@ -34,6 +34,8 @@ export class Player {
     this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
 
     document.addEventListener("keydown", (evt) => {
+      if (this.game.gameOver) return;
+
       const key = evt.key;
       switch (key) {
         case "ArrowUp":
