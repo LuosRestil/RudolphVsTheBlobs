@@ -14,6 +14,7 @@ export class Game {
   enemies: Enemy[];
   projectiles: Projectile[] = [];
   gameOver: boolean = false;
+  enemySplitFactor: number = 2;
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
@@ -45,6 +46,12 @@ export class Game {
     this.draw();
     this.update(dts);
     if (!this.gameOver) this.detectCollisions();
+    if (!this.enemies.length) {
+      // this.level++;
+      this.enemies = this.spawnEnemies();
+      this.projectiles = [];
+      this.resetPlayer();
+    }
   };
 
   private update(dts: number): void {
@@ -61,8 +68,23 @@ export class Game {
     for (let projectile of this.projectiles) {
       for (let enemy of this.enemies) {
         if (circleCircleCollisionDetected(projectile, enemy)) {
-          enemy.isActive = false;
           projectile.isActive = false;
+          enemy.requiredHits--;
+          if (enemy.requiredHits === 0) {
+            enemy.isActive = false;
+            if (enemy.stage < 3) {
+              for (let i = 0; i < this.enemySplitFactor; i++) {
+                this.enemies.push(
+                  new Enemy(
+                    this.ctx,
+                    enemy.pos.copy(),
+                    enemy.stage + 1,
+                    enemy.scale / 2
+                  )
+                );
+              }
+            }
+          }
         }
       }
     }
@@ -97,7 +119,7 @@ export class Game {
   private spawnEnemies(): Enemy[] {
     let enemies = [];
     for (let i = 0; i < 3; i++) {
-      enemies.push(new Enemy(this.ctx));
+      enemies.push(new Enemy(this.ctx, new Vec2(0, 0), 1, 1));
     }
     return enemies;
   }
@@ -140,11 +162,15 @@ export class Game {
   private refresh(): void {
     this.projectiles = [];
     this.enemies = this.spawnEnemies();
+    this.resetPlayer();
+    this.gameOver = false;
+  }
+
+  private resetPlayer() {
     this.player.pos = new Vec2(
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2
     );
     this.player.vel = new Vec2(0, 0);
-    this.gameOver = false;
   }
 }

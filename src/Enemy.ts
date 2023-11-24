@@ -3,18 +3,39 @@ import { randRange, screenWrap } from "./utils";
 
 export class Enemy {
   ctx: CanvasRenderingContext2D;
-  radius: number = 75;
+  baseSize: number = 75;
+  radius: number;
   pos: Vec2 = new Vec2(0, 0);
   vel: Vec2;
   minVel: number = 20;
   maxVel: number = 120;
   isActive: boolean = true;
+  stage: number;
+  scale: number;
+  requiredHits: number;
+  colors = {
+    fill: ["limegreen", "violet", "crimson"],
+    stroke: ["green", "rebeccapurple", "firebrick"],
+  };
 
-  constructor(ctx: CanvasRenderingContext2D) {
+  constructor(
+    ctx: CanvasRenderingContext2D,
+    origin: Vec2,
+    stage: number,
+    scale: number
+  ) {
     this.ctx = ctx;
+    this.pos = origin;
+    this.stage = stage;
+    this.scale = scale;
+    this.radius = this.baseSize * scale;
     this.vel = Vec2.fromAngle(Math.random() * Math.PI * 2).scale(
       randRange(this.minVel, this.maxVel)
     );
+    const rand = Math.random();
+    if (rand > 0.2) this.requiredHits = 1;
+    else if (rand > 0.05) this.requiredHits = 2;
+    else this.requiredHits = 3;
   }
 
   update(dts: number): void {
@@ -25,9 +46,9 @@ export class Enemy {
   draw(): void {
     const ctx = this.ctx;
     // body
-    ctx.fillStyle = "limegreen";
-    ctx.strokeStyle = "green";
-    ctx.lineWidth = 3;
+    ctx.fillStyle = this.colors.fill[this.requiredHits - 1];
+    ctx.strokeStyle = this.colors.stroke[this.requiredHits - 1];
+    ctx.lineWidth = 3 * this.scale;
     ctx.beginPath();
     ctx.arc(this.pos.x, this.pos.y, this.radius, 0, Math.PI * 2);
     ctx.fill();

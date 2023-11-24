@@ -50,6 +50,10 @@ export class Vec2 {
     return this.normalize().scale(mag);
   }
 
+  copy(): Vec2 {
+    return new Vec2(this.x, this.y);
+  }
+
   static fromAngle(angle: number, magnitude: number = 1): Vec2 {
     const v = new Vec2(Math.cos(angle), Math.sin(angle));
     v.scale(magnitude);
