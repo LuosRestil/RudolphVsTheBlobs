@@ -20,6 +20,7 @@ body {
   height: 720px;
   background-color: black;
   box-shadow: 5px 5px 15px black;
+  position: relative;
 }
 
 #title-screen {
@@ -32,8 +33,18 @@ body {
   align-items: center;
   justify-content: center;
   font: 40px monospace;
+  z-index: 1;
+  position: relative;
 }
 
 #game-canvas {
   display: none;
+  z-index: 1;
+  position: relative;
+}
+
+#bg-canvas {
+  position: absolute;
+  top: 0px;
+  left: 0px;
 }
