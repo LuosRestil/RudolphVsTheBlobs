@@ -123,8 +123,6 @@ export class Game {
   }
 
   private spawnEnemies(): Enemy[] {
-    console.log('spawning enemies...');
-    console.log(this.level);
     let enemies = [];
     for (let i = 0; i < this.level * 2; i++) {
       enemies.push(new Enemy(this.ctx, new Vec2(0, 0), 1, 1));
@@ -169,6 +167,7 @@ export class Game {
 
   private refresh(): void {
     this.score = 0;
+    this.level = 1;
     this.projectiles = [];
     this.enemies = this.spawnEnemies();
     this.resetPlayer();
