@@ -147,6 +147,7 @@ export class Player {
   }
 
   private fire(): void {
+    if (this.game.score > 0) this.game.score--;
     const nosePos = Vec2.fromAngle(this.rotation, this.width / 2).add(this.pos);
     const vel = Vec2.fromAngle(this.rotation, this.projectileSpeed);
     this.game.projectiles.push(new Projectile(this.ctx, nosePos, vel));
