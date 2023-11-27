@@ -23,7 +23,7 @@ export class Player {
   pos: Vec2;
   vel: Vec2 = new Vec2(0, 0);
   accel: Vec2 = new Vec2(0, 0);
-  propulsionForce: number = 1000;
+  propulsionForce: number = 800;
   maxVel: number = 800;
   projectileSpeed: number = 200;
   ctx: CanvasRenderingContext2D;
