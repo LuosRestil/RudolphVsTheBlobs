@@ -1,5 +1,6 @@
 import { Game } from "./Game";
 import { Projectile } from "./Projectile";
+import { Sparkles } from "./Sparkles";
 import { Vec2 } from "./Vec2";
 import { screenWrap } from "./utils";
 
@@ -27,11 +28,13 @@ export class Player {
   projectileSpeed: number = 200;
   ctx: CanvasRenderingContext2D;
   game: Game;
+  sparkles: Sparkles;
 
   constructor(ctx: CanvasRenderingContext2D, game: Game) {
     this.ctx = ctx;
     this.game = game;
     this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
+    this.sparkles = new Sparkles();
 
     document.addEventListener("keydown", (evt) => {
       if (this.game.gameOver) return;
@@ -80,7 +83,16 @@ export class Player {
     if (this.keys.left) this.rotation -= this.rotationSpeed * dts;
     if (this.keys.up) {
       this.applyPropulsionForce();
+      this.sparkles.isActive = true;
+    } else {
+      this.sparkles.isActive = false;
     }
+
+    const buttPos = Vec2.fromAngle(this.rotation, -this.width / 2).add(
+      this.pos
+    );
+    this.sparkles.update(dts, buttPos, this.rotation);
+
     this.vel.add(Vec2.scale(this.accel, dts));
     if (this.vel.mag() > this.maxVel) {
       this.vel.setMag(this.maxVel);
@@ -91,6 +103,7 @@ export class Player {
   }
 
   draw(): void {
+    this.sparkles.draw(this.ctx);
     this.ctx.save();
 
     this.ctx.translate(this.pos.x, this.pos.y);

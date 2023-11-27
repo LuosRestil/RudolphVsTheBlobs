@@ -1,6 +1,7 @@
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
+import { Splat } from "./Splat";
 import { Vec2 } from "./Vec2";
 import {
   circleCircleCollisionDetected,
@@ -13,6 +14,7 @@ export class Game {
   player: Player;
   enemies: Enemy[];
   projectiles: Projectile[] = [];
+  splats: Splat[] = [];
   gameOver: boolean = false;
   enemySplitFactor: number = 2;
   score: number = 0;
@@ -45,6 +47,7 @@ export class Game {
       (projectile) => projectile.isActive
     );
     this.enemies = this.enemies.filter((enemy) => enemy.isActive);
+    this.splats = this.splats.filter((splat) => splat.isActive);
     this.draw();
     this.update(dts);
     if (!this.gameOver) this.detectCollisions();
@@ -63,6 +66,9 @@ export class Game {
     }
     for (let projectile of this.projectiles) {
       projectile.update(dts);
+    }
+    for (let splat of this.splats) {
+      splat.update(dts);
     }
   }
 
@@ -86,6 +92,14 @@ export class Game {
                   )
                 );
               }
+            } else {
+              this.splats.push(
+                new Splat(
+                  enemy.pos.copy(),
+                  enemy.colors.fill[0],
+                  enemy.colors.stroke[0]
+                )
+              );
             }
           }
         }
@@ -101,6 +115,7 @@ export class Game {
     }
     if (collisionDetected) {
       this.gameOver = true;
+      this.splats.push(new Splat(this.player.pos.copy(), "crimson", "darkred"));
     }
   }
 
@@ -111,6 +126,9 @@ export class Game {
     }
     for (let projectile of this.projectiles) {
       projectile.draw();
+    }
+    for (let splat of this.splats) {
+      splat.draw(this.ctx);
     }
     if (!this.gameOver) this.player.draw();
 
