@@ -15,9 +15,7 @@ export class Splat {
     this.fillColor = fillColor;
     this.strokeColor = strokeColor;
     for (let angle = 0; angle < Math.PI * 2; angle += Math.PI / 4) {
-      const vel = new Vec2(Math.cos(angle), Math.sin(angle)).scale(
-        this.particleSpeed
-      );
+      const vel = Vec2.fromAngle(angle, this.particleSpeed);
       this.particles.push(
         new SplatParticle(this.pos.copy(), vel, fillColor, strokeColor)
       );
