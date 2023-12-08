@@ -19,11 +19,25 @@ export class Game {
   enemySplitFactor: number = 2;
   score: number = 0;
   level: number = 1;
+  mainSong: HTMLAudioElement = new Audio("main-song.ogg");
+  gameOverSong: HTMLAudioElement = new Audio("game-over.wav");
+  playerDeathSound: HTMLAudioElement = new Audio("player-death.wav");
+  levelUpSound: HTMLAudioElement = new Audio("level-up.mp3");
 
   constructor(ctx: CanvasRenderingContext2D) {
     this.ctx = ctx;
     this.player = new Player(ctx, this);
     this.enemies = this.spawnEnemies();
+
+    this.mainSong.loop = true;
+    this.mainSong.volume = 0.4;
+    this.mainSong.play();
+
+    this.gameOverSong.preload = "auto";
+    this.gameOverSong.volume = 0.5;
+    this.playerDeathSound.preload = "auto";
+    this.playerDeathSound.volume = 0.5;
+    this.levelUpSound.preload = "auto";
 
     document.addEventListener("keydown", (evt) => {
       if (this.gameOver && evt.key === "r") {
@@ -56,6 +70,7 @@ export class Game {
       this.enemies = this.spawnEnemies();
       this.projectiles = [];
       this.resetPlayer();
+      this.levelUpSound.play();
     }
   };
 
@@ -82,6 +97,7 @@ export class Game {
           if (enemy.requiredHits === 0) {
             enemy.isActive = false;
             if (enemy.stage < 3) {
+              enemy.pop();
               for (let i = 0; i < this.enemySplitFactor; i++) {
                 this.enemies.push(
                   new Enemy(
@@ -93,6 +109,7 @@ export class Game {
                 );
               }
             } else {
+              enemy.splat();
               this.splats.push(
                 new Splat(
                   enemy.pos.copy(),
@@ -101,6 +118,8 @@ export class Game {
                 )
               );
             }
+          } else {
+            enemy.ding();
           }
         }
       }
@@ -114,8 +133,12 @@ export class Game {
       }
     }
     if (collisionDetected) {
-      this.gameOver = true;
       this.splats.push(new Splat(this.player.pos.copy(), "crimson", "darkred"));
+      this.gameOver = true;
+      this.mainSong.pause();
+      this.mainSong.currentTime = 0;
+      this.playerDeathSound.play();
+      this.gameOverSong.play();
     }
   }
 
@@ -190,6 +213,9 @@ export class Game {
     this.enemies = this.spawnEnemies();
     this.resetPlayer();
     this.gameOver = false;
+    this.gameOverSong.pause();
+    this.gameOverSong.currentTime = 0;
+    this.mainSong.play();
   }
 
   private resetPlayer(): void {

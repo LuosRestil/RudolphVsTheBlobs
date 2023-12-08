@@ -29,12 +29,18 @@ export class Player {
   ctx: CanvasRenderingContext2D;
   game: Game;
   sparkles: Sparkles;
+  fireSound: HTMLAudioElement = new Audio("laser.wav");
+  sparkleSound: HTMLAudioElement = new Audio("sparkle2.wav");
 
   constructor(ctx: CanvasRenderingContext2D, game: Game) {
     this.ctx = ctx;
     this.game = game;
     this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
     this.sparkles = new Sparkles();
+
+    this.fireSound.preload = "auto";
+    this.sparkleSound.preload = "auto";
+    this.sparkleSound.loop = true;
 
     document.addEventListener("keydown", (evt) => {
       if (this.game.gameOver) return;
@@ -84,8 +90,13 @@ export class Player {
     if (this.keys.up) {
       this.applyPropulsionForce();
       this.sparkles.isActive = true;
+      if (this.sparkleSound.paused) {
+        this.sparkleSound.play();
+      }
     } else {
       this.sparkles.isActive = false;
+      this.sparkleSound.pause();
+      this.sparkleSound.currentTime = 0;
     }
 
     const buttPos = Vec2.fromAngle(this.rotation, -this.width / 2).add(
@@ -160,6 +171,11 @@ export class Player {
   }
 
   private fire(): void {
+    if (!this.fireSound.paused) {
+      this.fireSound.currentTime = 0; // Restart the sound if it is playing
+    }
+    this.fireSound.play();
+
     if (this.game.score > 0) this.game.score--;
     const nosePos = Vec2.fromAngle(this.rotation, this.width / 2).add(this.pos);
     const vel = Vec2.fromAngle(this.rotation, this.projectileSpeed);

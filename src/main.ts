@@ -9,6 +9,11 @@ document.addEventListener("keydown", startGame);
 
 const titleScreen = document.getElementById("title-screen") as HTMLDivElement;
 
+const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
+introSong.loop = true;
+introSong.volume = 0.5;
+introSong.play();
+
 function startGame(evt: KeyboardEvent): void {
   if (evt.key === "r") {
     const canvas = document.getElementById("game-canvas") as HTMLCanvasElement;
@@ -23,6 +28,7 @@ function startGame(evt: KeyboardEvent): void {
 
     document.removeEventListener("keydown", startGame);
     gameStarted = true;
+    introSong.pause();
   }
 }
 

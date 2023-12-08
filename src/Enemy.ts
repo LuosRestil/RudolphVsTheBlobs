@@ -17,6 +17,9 @@ export class Enemy {
     fill: ["limegreen", "violet", "crimson"],
     stroke: ["green", "rebeccapurple", "firebrick"],
   };
+  dingSound: HTMLAudioElement = new Audio("ding.ogg");
+  popSound: HTMLAudioElement = new Audio("pop.mp3");
+  splatSound: HTMLAudioElement = new Audio("splat.wav");
 
   constructor(
     ctx: CanvasRenderingContext2D,
@@ -36,6 +39,10 @@ export class Enemy {
     if (rand > 0.2) this.requiredHits = 1;
     else if (rand > 0.05) this.requiredHits = 2;
     else this.requiredHits = 3;
+
+    this.dingSound.preload = "auto";
+    this.popSound.preload = "auto";
+    this.splatSound.preload = "auto";
   }
 
   update(dts: number): void {
@@ -121,5 +128,20 @@ export class Enemy {
       Math.PI * 2
     );
     ctx.fill();
+  }
+
+  ding(): void {
+    if (!this.dingSound.paused) {
+      this.dingSound.currentTime = 0; // Restart the sound if it is playing
+    }
+    this.dingSound.play();
+  }
+
+  pop(): void {
+    this.popSound.play();
+  }
+
+  splat(): void {
+    this.splatSound.play();
   }
 }
