@@ -195,12 +195,12 @@ export class Game {
     this.ctx.strokeStyle = "black";
     this.ctx.font = "48px monospace";
     this.ctx.strokeText(
-      'Press "R" to play again',
+      'Press R to play again',
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2 + 50
     );
     this.ctx.fillText(
-      'Press "R" to play again',
+      'Press R to play again',
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2 + 50
     );

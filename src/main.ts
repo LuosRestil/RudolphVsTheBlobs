@@ -7,12 +7,35 @@ let gameStarted = false;
 
 document.addEventListener("keydown", startGame);
 
-const titleScreen = document.getElementById("title-screen") as HTMLDivElement;
+
+const storyButton = document.getElementById("story-btn");
+const attributionsButton = document.getElementById("attributions-btn");
+storyButton?.addEventListener("click", () => showScreen("story-screen"));
+attributionsButton?.addEventListener("click", () =>
+  showScreen("attributions-screen")
+);
+
+document
+  .querySelectorAll(".back-btn")
+  .forEach((btn) =>
+    btn.addEventListener("click", () => showScreen("title-screen"))
+  );
+
+const flashElements = document.querySelectorAll(".flash") as NodeListOf<HTMLElement>;
+setInterval(() => flashElements.forEach(elem => elem.style.visibility = (elem.style.visibility === "hidden" ? "visible": "hidden")), 500);
 
 const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
 introSong.loop = true;
 introSong.volume = 0.5;
 introSong.play();
+
+function showScreen(id: string) {
+  const screens = document.querySelectorAll(
+    "div.screen"
+  ) as NodeListOf<HTMLDivElement>;
+  screens.forEach((screen) => (screen.style.display = "none"));
+  (document.getElementById(id) as HTMLDivElement).style.display = "flex";
+}
 
 function startGame(evt: KeyboardEvent): void {
   if (evt.key === "r") {
@@ -21,7 +44,9 @@ function startGame(evt: KeyboardEvent): void {
     canvas.height = 720;
     const ctx = canvas.getContext("2d") as CanvasRenderingContext2D;
 
-    titleScreen.style.display = "none";
+    (
+      document.querySelectorAll("div.screen") as NodeListOf<HTMLDivElement>
+    ).forEach((elem) => (elem.style.display = "none"));
     canvas.style.display = "block";
 
     new Game(ctx).start();

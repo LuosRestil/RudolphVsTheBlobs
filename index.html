@@ -7,9 +7,27 @@
   </head>
   <body>
     <div id="game-container">
-      <div id="title-screen">
-        <div>Rudolph VS The Blobs</div>
-        <div>Press R To Start</div>
+      <div id="title-screen" class="screen">
+        <div class="title-text title-section">
+          <div id="rudolph">Rudolph</div>
+          <div id="vs">vs</div>
+          <div id="the-blobs">The Blobs</div>
+        </div>
+        
+        <!-- <div>Rudolph VS The Blobs</div> -->
+        <div class="flash title-section">Press R To Start</div>
+        <div id="title-btns title-section">
+          <button id="story-btn" class="menu-btn">Story</button>
+          <button id="attributions-btn" class="menu-btn">Attributions</button>
+        </div>
+      </div>
+      <div id="story-screen" class="screen">
+        <button class="back-btn">&lt;-</button>
+        <p>This is the story screen.</p>
+      </div>
+      <div id="attributions-screen" class="screen">
+        <button class="back-btn">&lt;-</button>
+        <p>This is the attributions screen.</p>
       </div>
       <canvas id="bg-canvas"></canvas>
       <canvas id="game-canvas"></canvas>

@@ -35,6 +35,70 @@ body {
   font: 40px monospace;
   z-index: 1;
   position: relative;
+  cursor: default;
+}
+
+.title-section {
+  margin-bottom: 40px;
+}
+
+@font-face {
+  font-family: sentinel;
+  src: url("Sentinel.ttf");
+}
+
+.title-text {
+  font: 80px monospace;
+  text-align: center;
+}
+
+@keyframes glowing {
+  0%,
+  100% {
+    text-shadow: 0 0 20px lime;
+  }
+  50% {
+    text-shadow: 0 0 20px lime, 0 0 20px lime, 0 0 20px lime, 0 0 20px lime,
+      0 0 20px lime;
+  }
+}
+
+#rudolph {
+  font: 80px sentinel;
+  text-shadow: 5px 5px red;
+}
+
+#the-blobs {
+  -webkit-text-stroke: 2px black;
+  animation: glowing 2.5s linear infinite;
+}
+
+#story-screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font: 40px monospace;
+  z-index: 1;
+  position: relative;
+}
+
+#attributions-screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font: 40px monospace;
+  z-index: 1;
+  position: relative;
 }
 
 #game-canvas {
@@ -47,4 +111,36 @@ body {
   position: absolute;
   top: 0px;
   left: 0px;
+}
+
+button {
+  &:hover {
+    cursor: pointer;
+  }
+}
+
+.menu-btn {
+  color: white;
+  background-color: black;
+  font-size: 20px;
+  border: 3px solid white;
+  border-radius: 5px;
+  width: 200px;
+  height: 50px;
+
+  &:hover {
+    color: black;
+    background-color: white;
+  }
+}
+
+.back-btn {
+  background-color: transparent;
+  font-size: 50px;
+  color: white;
+  font-weight: bold;
+  border: none;
+  position: absolute;
+  top: 20px;
+  left: 40px;
 }
