@@ -7,7 +7,6 @@ let gameStarted = false;
 
 document.addEventListener("keydown", startGame);
 
-
 const storyButton = document.getElementById("story-btn");
 const attributionsButton = document.getElementById("attributions-btn");
 storyButton?.addEventListener("click", () => showScreen("story-screen"));
@@ -27,7 +26,9 @@ setInterval(() => flashElements.forEach(elem => elem.style.visibility = (elem.st
 const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
 introSong.loop = true;
 introSong.volume = 0.5;
-introSong.play();
+document.addEventListener('mousemove', () => {
+  introSong.play();
+});
 
 function showScreen(id: string) {
   const screens = document.querySelectorAll(
