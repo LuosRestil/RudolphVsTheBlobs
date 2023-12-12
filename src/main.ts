@@ -7,10 +7,12 @@ let gameStarted = false;
 
 document.addEventListener("keydown", startGame);
 
-const storyButton = document.getElementById("story-btn");
-const attributionsButton = document.getElementById("attributions-btn");
-storyButton?.addEventListener("click", () => showScreen("story-screen"));
-attributionsButton?.addEventListener("click", () =>
+const controlsButton = document.getElementById("controls-btn") as HTMLElement;
+const storyButton = document.getElementById("story-btn") as HTMLElement;
+const attributionsButton = document.getElementById("attributions-btn") as HTMLElement;
+controlsButton.addEventListener("click", () => showScreen("controls-screen"));
+storyButton.addEventListener("click", () => showScreen("story-screen"));
+attributionsButton.addEventListener("click", () =>
   showScreen("attributions-screen")
 );
 
