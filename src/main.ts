@@ -26,8 +26,14 @@ setInterval(() => flashElements.forEach(elem => elem.style.visibility = (elem.st
 const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
 introSong.loop = true;
 introSong.volume = 0.5;
-introSong.muted = true;
-introSong.play();
+
+const enterScreen = document.getElementById("enter-screen") as HTMLElement;
+const enterBtn = document.getElementById("enter-btn") as HTMLElement;
+enterBtn.addEventListener("click", () => {
+  introSong.play();
+  enterScreen.style.display = 'none';
+  showScreen("title-screen");
+});
 
 function showScreen(id: string) {
   const screens = document.querySelectorAll(
