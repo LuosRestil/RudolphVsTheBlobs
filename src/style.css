@@ -23,21 +23,6 @@ body {
   position: relative;
 }
 
-#title-screen {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  background: transparent;
-  color: white;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font: 40px monospace;
-  z-index: 1;
-  position: relative;
-  cursor: default;
-}
-
 .title-section {
   margin-bottom: 40px;
 }
@@ -73,7 +58,7 @@ body {
   animation: glowing 2.5s linear infinite;
 }
 
-#story-screen {
+/* #story-screen {
   display: none;
   width: 100%;
   height: 100%;
@@ -101,7 +86,28 @@ body {
   position: relative;
 }
 
+#title-screen {
+  
+} */
+
+#enter-screen {
+  display: flex;
+}
+
 .screen {
+  display: none;
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  color: white;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font: 40px monospace;
+  z-index: 1;
+  position: relative;
+  cursor: default;
+
   &:hover {
     cursor: default;
   }
