@@ -26,7 +26,9 @@ setInterval(() => flashElements.forEach(elem => elem.style.visibility = (elem.st
 const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
 introSong.loop = true;
 introSong.volume = 0.5;
-introSong.play();
+document.addEventListener("mousemove", () => {
+  introSong.play();
+});
 
 function showScreen(id: string) {
   const screens = document.querySelectorAll(

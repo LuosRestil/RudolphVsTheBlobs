@@ -101,6 +101,12 @@ body {
   position: relative;
 }
 
+.screen {
+  &:hover {
+    cursor: default;
+  }
+}
+
 #game-canvas {
   display: none;
   z-index: 1;
@@ -143,4 +149,7 @@ button {
   position: absolute;
   top: 20px;
   left: 40px;
+  &:hover {
+    cursor: pointer;
+  }
 }
