@@ -29,6 +29,7 @@ export class Game {
     this.player = new Player(ctx, this);
     this.enemies = this.spawnEnemies();
 
+    this.mainSong.preload = "auto";
     this.mainSong.loop = true;
     this.mainSong.volume = 0.4;
     this.mainSong.play();
