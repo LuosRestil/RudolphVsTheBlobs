@@ -58,38 +58,6 @@ body {
   animation: glowing 2.5s linear infinite;
 }
 
-/* #story-screen {
-  display: none;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  color: white;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font: 40px monospace;
-  z-index: 1;
-  position: relative;
-}
-
-#attributions-screen {
-  display: none;
-  width: 100%;
-  height: 100%;
-  background: transparent;
-  color: white;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font: 40px monospace;
-  z-index: 1;
-  position: relative;
-}
-
-#title-screen {
-  
-} */
-
 #enter-screen {
   display: flex;
 }
@@ -158,4 +126,27 @@ button {
   &:hover {
     cursor: pointer;
   }
+}
+
+.attr-copy {
+  padding: 2rem;
+  font-size: 1.2rem;
+
+  a {
+    color: white;
+    text-decoration: underline;
+  }
+}
+
+.line {
+  margin-bottom: 1rem;
+}
+
+.controls-copy {
+  padding: 10rem;
+}
+
+.story-copy {
+  padding: 5rem;
+  line-height: 1.3;
 }
