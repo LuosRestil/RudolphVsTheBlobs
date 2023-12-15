@@ -98,7 +98,7 @@ function animate(ms: number): void {
 
   requestAnimationFrame(animate);
 
-  const dt = ms - lastTime;
+  const dt = Math.min(35, ms - lastTime);
   const dts = dt / 1000;
   lastTime = ms;
 
