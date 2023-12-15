@@ -9,7 +9,9 @@ document.addEventListener("keydown", startGame);
 
 const controlsButton = document.getElementById("controls-btn") as HTMLElement;
 const storyButton = document.getElementById("story-btn") as HTMLElement;
-const attributionsButton = document.getElementById("attributions-btn") as HTMLElement;
+const attributionsButton = document.getElementById(
+  "attributions-btn"
+) as HTMLElement;
 controlsButton.addEventListener("click", () => showScreen("controls-screen"));
 storyButton.addEventListener("click", () => showScreen("story-screen"));
 attributionsButton.addEventListener("click", () =>
@@ -22,8 +24,18 @@ document
     btn.addEventListener("click", () => showScreen("title-screen"))
   );
 
-const flashElements = document.querySelectorAll(".flash") as NodeListOf<HTMLElement>;
-setInterval(() => flashElements.forEach(elem => elem.style.visibility = (elem.style.visibility === "hidden" ? "visible": "hidden")), 500);
+const flashElements = document.querySelectorAll(
+  ".flash"
+) as NodeListOf<HTMLElement>;
+setInterval(
+  () =>
+    flashElements.forEach(
+      (elem) =>
+        (elem.style.visibility =
+          elem.style.visibility === "hidden" ? "visible" : "hidden")
+    ),
+  500
+);
 
 const introSong: HTMLAudioElement = new Audio("intro-song.mp3");
 introSong.loop = true;
@@ -33,7 +45,7 @@ const enterScreen = document.getElementById("enter-screen") as HTMLElement;
 const enterBtn = document.getElementById("enter-btn") as HTMLElement;
 enterBtn.addEventListener("click", () => {
   introSong.play();
-  enterScreen.style.display = 'none';
+  enterScreen.style.display = "none";
   showScreen("title-screen");
 });
 
@@ -86,7 +98,7 @@ function animate(ms: number): void {
 
   requestAnimationFrame(animate);
 
-  const dt = ms - lastTime;
+  const dt = Math.min(35, ms - lastTime);
   const dts = dt / 1000;
   lastTime = ms;
 
