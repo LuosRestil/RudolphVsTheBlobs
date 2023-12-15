@@ -84,6 +84,7 @@ body {
   display: none;
   z-index: 1;
   position: relative;
+  cursor: none;
 }
 
 #bg-canvas {
@@ -131,11 +132,11 @@ button {
 .attr-copy {
   padding: 2rem;
   font-size: 1.2rem;
+}
 
-  a {
-    color: white;
-    text-decoration: underline;
-  }
+a {
+  color: white;
+  text-decoration: underline;
 }
 
 .line {
