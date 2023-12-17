@@ -26,6 +26,8 @@ export class Player {
   propulsionForce: number = 800;
   maxVel: number = 800;
   projectileSpeed: number = 200;
+  cookieCannonCapacity = 1;
+  overheat = false;
   ctx: CanvasRenderingContext2D;
   game: Game;
   sparkles: Sparkles;
@@ -111,6 +113,13 @@ export class Player {
     this.pos.add(Vec2.scale(this.vel, dts));
     this.accel.scale(0);
     screenWrap(this, this.ctx);
+
+    this.cookieCannonCapacity += this.overheat ? 0 : 0.002;
+    if (this.cookieCannonCapacity > 1) this.cookieCannonCapacity = 1;
+    else if (this.cookieCannonCapacity < 0) {
+      if (!this.overheat) this.triggerOverheat();
+      else this.cookieCannonCapacity = 0;
+    };
   }
 
   draw(): void {
@@ -158,6 +167,7 @@ export class Player {
     this.ctx.fillRect(-20, -this.height / 2 - 10, 5, 10);
     this.ctx.fillRect(-20, this.height / 2, 5, 10);
     // tail
+    this.ctx.fillStyle = "brown";
     this.ctx.beginPath();
     this.ctx.arc(-this.width / 2, 0, 5, 0, Math.PI * 2);
     this.ctx.fill();
@@ -171,6 +181,7 @@ export class Player {
   }
 
   private fire(): void {
+    if (this.overheat) return;
     if (!this.fireSound.paused) {
       this.fireSound.currentTime = 0; // Restart the sound if it is playing
     }
@@ -180,5 +191,15 @@ export class Player {
     const nosePos = Vec2.fromAngle(this.rotation, this.width / 2).add(this.pos);
     const vel = Vec2.fromAngle(this.rotation, this.projectileSpeed);
     this.game.projectiles.push(new Projectile(this.ctx, nosePos, vel));
+
+    this.cookieCannonCapacity -= .1;
+  }
+
+  private triggerOverheat() {
+    this.overheat = true;
+    setTimeout(() => {
+      this.overheat = false;
+      this.cookieCannonCapacity = 0;
+    }, 5000);
   }
 }

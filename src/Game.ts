@@ -1,3 +1,4 @@
+import { CooldownBar } from "./CooldownBar";
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
 import { Projectile } from "./Projectile";
@@ -19,6 +20,7 @@ export class Game {
   enemySplitFactor: number = 2;
   score: number = 0;
   level: number = 1;
+  cooldownBar: CooldownBar;
   mainSong: HTMLAudioElement = new Audio("main-song.ogg");
   gameOverSong: HTMLAudioElement = new Audio("game-over.wav");
   playerDeathSound: HTMLAudioElement = new Audio("player-death.wav");
@@ -39,6 +41,8 @@ export class Game {
     this.playerDeathSound.preload = "auto";
     this.playerDeathSound.volume = 0.5;
     this.levelUpSound.preload = "auto";
+
+    this.cooldownBar = new CooldownBar(ctx, this.player);
 
     document.addEventListener("keydown", (evt) => {
       if (this.gameOver && evt.key === "r") {
@@ -63,7 +67,7 @@ export class Game {
     );
     this.enemies = this.enemies.filter((enemy) => enemy.isActive);
     this.splats = this.splats.filter((splat) => splat.isActive);
-    this.draw();
+    this.draw(dts);
     this.update(dts);
     if (!this.gameOver) this.detectCollisions();
     if (!this.enemies.length) {
@@ -143,7 +147,7 @@ export class Game {
     }
   }
 
-  private draw(): void {
+  private draw(dts: number): void {
     this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
     for (let enemy of this.enemies) {
       enemy.draw();
@@ -154,7 +158,10 @@ export class Game {
     for (let splat of this.splats) {
       splat.draw(this.ctx);
     }
+
     if (!this.gameOver) this.player.draw();
+
+    this.cooldownBar.draw(dts);
 
     if (this.gameOver) {
       this.showGameOver();
