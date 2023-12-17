@@ -42,11 +42,9 @@ export class CooldownBar {
     // overheat text
     if (this.player.overheat && this.showText) {
       ctx.font = "28px monospace";
-      ctx.letterSpacing = "10px";
       ctx.fillStyle = "white";
       ctx.textAlign = "center";
       ctx.fillText("OVERHEAT", canvas.width / 2, this.y + this.height - 5);
-      ctx.letterSpacing = "0px";
     }
 
     // hide unused capacity
