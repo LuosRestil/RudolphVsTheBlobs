@@ -233,6 +233,9 @@ export class Game {
     );
     this.player.vel = new Vec2(0, 0);
     this.player.rotation = 0;
+    this.player.cookieCannonCapacity = 1;
+    this.player.overheat = false;
+    if (this.player.timeout) clearTimeout(this.player.timeout);
   }
 
   private showScore(): void {

@@ -33,6 +33,7 @@ export class Player {
   sparkles: Sparkles;
   fireSound: HTMLAudioElement = new Audio("laser.wav");
   sparkleSound: HTMLAudioElement = new Audio("sparkle2.wav");
+  timeout: ReturnType<typeof setTimeout> | undefined;
 
   constructor(ctx: CanvasRenderingContext2D, game: Game) {
     this.ctx = ctx;
@@ -196,8 +197,10 @@ export class Player {
   }
 
   private triggerOverheat() {
+    // TODO play overheat sound
     this.overheat = true;
-    setTimeout(() => {
+    this.timeout = setTimeout(() => {
+      // TODO play cooldown sound
       this.overheat = false;
       this.cookieCannonCapacity = 0;
     }, 5000);

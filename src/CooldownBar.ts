@@ -13,22 +13,19 @@ export class CooldownBar {
 
   constructor(ctx: CanvasRenderingContext2D, player: Player) {
     this.ctx = ctx;
-    const canvas = ctx.canvas;
     this.gradient = ctx.createLinearGradient(
-      canvas.width / 2 - this.width / 2,
+      this.ctx.canvas.width / 2 - this.width / 2,
       this.y,
-      this.width,
+      this.width * 1.5,
       this.height
     );
-    this.gradient.addColorStop(0, "limegreen");
+    this.gradient.addColorStop(0, "green");
     this.gradient.addColorStop(0.5, "yellow");
     this.gradient.addColorStop(1, "red");
     this.player = player;
   }
 
   draw(dts: number) {
-    this.ctx.save();
-
     // flashing for overheat message
     this.flashCounter += dts;
     if (this.flashCounter > 0.5) {
@@ -40,15 +37,7 @@ export class CooldownBar {
     const ctx = this.ctx;
     const canvas = ctx.canvas;
     ctx.fillStyle = this.player.overheat ? "red" : this.gradient;
-    ctx.beginPath();
-    ctx.roundRect(
-      canvas.width / 2 - this.width / 2,
-      this.y,
-      this.width,
-      this.height,
-      this.radius
-    );
-    ctx.fill();
+    ctx.fillRect(canvas.width/2 - this.width/2, this.y, this.width, this.height);
 
     // overheat text
     if (this.player.overheat && this.showText) {
@@ -72,14 +61,11 @@ export class CooldownBar {
     // outline
     ctx.strokeStyle = "white";
     ctx.lineWidth = 3;
-    ctx.beginPath();
-    ctx.roundRect(
+    ctx.strokeRect(
       canvas.width / 2 - this.width / 2,
       this.y,
       this.width,
       this.height,
-      this.radius
     );
-    ctx.stroke();
   }
 }
