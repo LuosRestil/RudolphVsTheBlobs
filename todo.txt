@@ -1,0 +1,8 @@
+[ ] Powerups
+    [ ] triple shot
+    [ ] faster cookies
+    [ ] blob-piercing cookies
+    [ ] shield
+    [ ] unlimited cookie cannon capacity
+
+[ ] Round cooldown bar edges (maybe)
