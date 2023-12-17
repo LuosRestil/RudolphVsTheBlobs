@@ -14,7 +14,7 @@ export class Player {
   width: number = 50;
   height: number = 25;
   rotation: number = 0;
-  rotationSpeed: number = Math.PI * 2;
+  rotationSpeed: number = Math.PI * 1.75;
   keys: Keys = {
     up: false,
     left: false,
@@ -23,7 +23,7 @@ export class Player {
   pos: Vec2;
   vel: Vec2 = new Vec2(0, 0);
   accel: Vec2 = new Vec2(0, 0);
-  propulsionForce: number = 800;
+  propulsionForce: number = 600;
   maxVel: number = 800;
   projectileSpeed: number = 200;
   cookieCannonCapacity = 1;
