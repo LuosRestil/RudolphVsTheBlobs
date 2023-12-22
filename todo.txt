@@ -1,9 +1,11 @@
 [ ] Powerups
-    [ ] triple shot
-    [ ] faster cookies
-    [ ] blob-piercing cookies
+    [X] triple shot
+    [X] faster cookies
+    [X] blob-piercing cookies
     [ ] shield
-    [ ] unlimited cookie cannon capacity
+    [X] unlimited cookie cannon capacity
+[ ] Pause
+[ ] Sound options (mute, volume?);
 
 [ ] Round cooldown bar edges (maybe)
 
