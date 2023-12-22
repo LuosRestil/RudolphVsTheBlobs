@@ -21,6 +21,13 @@ export function randRange(min: number, max: number): number {
   return min + Math.random() * (max - min);
 }
 
+/**
+ * Returns random integer in range min(inclusive) - max(exclusive)
+ */
+export function randInt(min: number, max: number): number {
+  return min + Math.floor(Math.random() * (max - min));
+}
+
 function clamp(value: number, min: number, max: number): number {
   return Math.max(min, Math.min(value, max));
 }

@@ -1,12 +1,14 @@
 import { CooldownBar } from "./CooldownBar";
 import { Enemy } from "./Enemy";
 import { Player } from "./Player";
+import { Powerup, PowerupType } from "./Powerup";
 import { Projectile } from "./Projectile";
 import { Splat } from "./Splat";
 import { Vec2 } from "./Vec2";
 import {
   circleCircleCollisionDetected,
   obbCircleCollisionDetected,
+  randInt,
 } from "./utils";
 
 export class Game {
@@ -16,6 +18,7 @@ export class Game {
   enemies: Enemy[];
   projectiles: Projectile[] = [];
   splats: Splat[] = [];
+  powerups: Powerup[] = [];
   gameOver: boolean = false;
   enemySplitFactor: number = 2;
   score: number = 0;
@@ -90,6 +93,36 @@ export class Game {
     for (let splat of this.splats) {
       splat.update(dts);
     }
+    for (let powerup of this.powerups) {
+      powerup.update(dts, this.ctx);
+    }
+  }
+
+  private draw(dts: number): void {
+    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
+    for (let enemy of this.enemies) {
+      enemy.draw();
+    }
+    for (let projectile of this.projectiles) {
+      projectile.draw();
+    }
+    for (let powerup of this.powerups) {
+      powerup.draw(this.ctx);
+    }
+    for (let splat of this.splats) {
+      splat.draw(this.ctx);
+    }
+
+    if (!this.gameOver) this.player.draw();
+
+    this.cooldownBar.draw(dts);
+
+    if (this.gameOver) {
+      this.showGameOver();
+    }
+
+    this.showScore();
+    this.showLevel();
   }
 
   private detectCollisions(): void {
@@ -122,6 +155,12 @@ export class Game {
                   enemy.colors.stroke[0]
                 )
               );
+              this.powerups.push(
+                new Powerup(
+                  enemy.pos.copy(),
+                  randInt(0, Object.keys(PowerupType).length / 2)
+                )
+              );
             }
           } else {
             enemy.ding();
@@ -145,30 +184,6 @@ export class Game {
       this.playerDeathSound.play();
       this.gameOverSong.play();
     }
-  }
-
-  private draw(dts: number): void {
-    this.ctx.clearRect(0, 0, this.ctx.canvas.width, this.ctx.canvas.height);
-    for (let enemy of this.enemies) {
-      enemy.draw();
-    }
-    for (let projectile of this.projectiles) {
-      projectile.draw();
-    }
-    for (let splat of this.splats) {
-      splat.draw(this.ctx);
-    }
-
-    if (!this.gameOver) this.player.draw();
-
-    this.cooldownBar.draw(dts);
-
-    if (this.gameOver) {
-      this.showGameOver();
-    }
-
-    this.showScore();
-    this.showLevel();
   }
 
   private spawnEnemies(): Enemy[] {
@@ -203,12 +218,12 @@ export class Game {
     this.ctx.strokeStyle = "black";
     this.ctx.font = "48px monospace";
     this.ctx.strokeText(
-      'Press R to play again',
+      "Press R to play again",
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2 + 50
     );
     this.ctx.fillText(
-      'Press R to play again',
+      "Press R to play again",
       this.ctx.canvas.width / 2,
       this.ctx.canvas.height / 2 + 50
     );
@@ -218,6 +233,7 @@ export class Game {
     this.score = 0;
     this.level = 1;
     this.projectiles = [];
+    this.powerups = [];
     this.enemies = this.spawnEnemies();
     this.resetPlayer();
     this.gameOver = false;

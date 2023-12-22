@@ -6,3 +6,5 @@
     [ ] unlimited cookie cannon capacity
 
 [ ] Round cooldown bar edges (maybe)
+
+[ ] Full screen support at various resolutions
