@@ -1,4 +1,5 @@
 import { Player } from "./Player";
+import { PowerupType } from "./Powerup";
 
 export class CooldownBar {
   width: number = 600;
@@ -26,6 +27,9 @@ export class CooldownBar {
   }
 
   draw(dts: number) {
+    const unlimited = this.player.powerups[PowerupType.UnlimitedCannon].isActive;
+    const overheat = this.player.overheat;
+
     // flashing for overheat message
     this.flashCounter += dts;
     if (this.flashCounter > 0.5) {
@@ -33,28 +37,38 @@ export class CooldownBar {
       this.showText = !this.showText;
     }
 
-    // fill with gradient or red if overheat
     const ctx = this.ctx;
     const canvas = ctx.canvas;
-    ctx.fillStyle = this.player.overheat ? "red" : this.gradient;
+    if (unlimited) {
+      ctx.fillStyle = "blue";
+    } else if (overheat) {
+      ctx.fillStyle = "red";
+    } else {
+      ctx.fillStyle = this.gradient;
+    }
     ctx.fillRect(canvas.width/2 - this.width/2, this.y, this.width, this.height);
 
-    // overheat text
-    if (this.player.overheat && this.showText) {
-      ctx.font = "28px monospace";
-      ctx.fillStyle = "white";
-      ctx.textAlign = "center";
-      ctx.fillText("OVERHEAT", canvas.width / 2, this.y + this.height - 5);
+    ctx.font = "28px monospace";
+    ctx.fillStyle = "white";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+
+    if (unlimited) {
+      ctx.fillText("UNLIMITED", canvas.width / 2, this.y + this.height / 2 + 2);
+    } else if (overheat && this.showText) {
+      ctx.fillText("OVERHEAT", canvas.width / 2, this.y + this.height / 2 + 2);
     }
 
     // hide unused capacity
-    ctx.fillStyle = "black";
-    ctx.fillRect(
-      canvas.width / 2 + this.width / 2,
-      this.y,
-      -this.width * this.player.cookieCannonCapacity,
-      this.height
-    );
+    if (!unlimited) {
+      ctx.fillStyle = "black";
+      ctx.fillRect(
+        canvas.width / 2 + this.width / 2,
+        this.y,
+        -this.width * this.player.cookieCannonCapacity,
+        this.height
+      );
+    }
 
     // outline
     ctx.strokeStyle = "white";

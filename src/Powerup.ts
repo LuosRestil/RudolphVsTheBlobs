@@ -19,18 +19,18 @@ export class Powerup {
   isActive: boolean = true;
 
   static colors = {
-    [PowerupType.TripleShot]: "blue",
-    [PowerupType.BlobPiercing]: "red",
-    [PowerupType.FastCookies]: "green",
-    [PowerupType.Shield]: "pink",
-    [PowerupType.UnlimitedCannon]: "dodgerblue",
+    [PowerupType.TripleShot]: "dodgerblue",
+    [PowerupType.BlobPiercing]: "crimson",
+    [PowerupType.FastCookies]: "darkgreen",
+    [PowerupType.Shield]: "darkorchid",
+    [PowerupType.UnlimitedCannon]: "maroon",
   }
 
   static labels = {
     [PowerupType.TripleShot]: "TS",
     [PowerupType.BlobPiercing]: "BP",
     [PowerupType.FastCookies]: "FC",
-    [PowerupType.Shield]: "DS",
+    [PowerupType.Shield]: "S",
     [PowerupType.UnlimitedCannon]: "UC",
   }
 

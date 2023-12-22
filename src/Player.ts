@@ -1,4 +1,5 @@
 import { Game } from "./Game";
+import { PowerupType } from "./Powerup";
 import { Projectile } from "./Projectile";
 import { Sparkles } from "./Sparkles";
 import { Vec2 } from "./Vec2";
@@ -33,13 +34,21 @@ export class Player {
   sparkles: Sparkles;
   fireSound: HTMLAudioElement = new Audio("laser.wav");
   sparkleSound: HTMLAudioElement = new Audio("sparkle2.wav");
-  timeout: ReturnType<typeof setTimeout> | undefined;
+  overheatTimeout?: ReturnType<typeof setTimeout>;
+  powerups: {
+    [key: string]: {
+      timeout?: ReturnType<typeof setTimeout>;
+      isActive: boolean;
+    };
+  };
+  powerupDuration: number = 10000;
 
   constructor(ctx: CanvasRenderingContext2D, game: Game) {
     this.ctx = ctx;
     this.game = game;
     this.pos = new Vec2(ctx.canvas.width / 2, ctx.canvas.height / 2);
     this.sparkles = new Sparkles();
+    this.powerups = this.initializePowerups();
 
     this.fireSound.preload = "auto";
     this.sparkleSound.preload = "auto";
@@ -120,7 +129,7 @@ export class Player {
     else if (this.cookieCannonCapacity < 0) {
       if (!this.overheat) this.triggerOverheat();
       else this.cookieCannonCapacity = 0;
-    };
+    }
   }
 
   draw(): void {
@@ -176,30 +185,66 @@ export class Player {
     this.ctx.restore();
   }
 
+  activatePowerup(type: PowerupType): void {
+    this.powerups[type].isActive = true;
+    if (this.powerups[type].timeout) clearTimeout(this.powerups[type].timeout);
+    this.powerups[type].timeout = setTimeout(() => {
+      this.powerups[type].isActive = false;
+    }, this.powerupDuration);
+  }
+
+  initializePowerups() {
+    const powerups = {
+      [PowerupType.TripleShot]: { isActive: false },
+      [PowerupType.FastCookies]: { isActive: false },
+      [PowerupType.BlobPiercing]: { isActive: false },
+      [PowerupType.UnlimitedCannon]: { isActive: false },
+      [PowerupType.Shield]: { isActive: false },
+    };
+    return powerups;
+  }
+
   private applyPropulsionForce(): void {
     const force = Vec2.fromAngle(this.rotation, this.propulsionForce);
     this.accel.add(force);
   }
 
   private fire(): void {
-    if (this.overheat) return;
+    if (this.overheat && !this.powerups[PowerupType.UnlimitedCannon].isActive) return;
     if (!this.fireSound.paused) {
       this.fireSound.currentTime = 0; // Restart the sound if it is playing
     }
     this.fireSound.play();
 
+    const speed =
+      this.projectileSpeed *
+      (this.powerups[PowerupType.FastCookies].isActive ? 2 : 1);
     if (this.game.score > 0) this.game.score--;
     const nosePos = Vec2.fromAngle(this.rotation, this.width / 2).add(this.pos);
-    const vel = Vec2.fromAngle(this.rotation, this.projectileSpeed);
+    const vel = Vec2.fromAngle(this.rotation, speed);
     this.game.projectiles.push(new Projectile(this.ctx, nosePos, vel));
+    if (this.powerups[PowerupType.TripleShot].isActive) {
+      console.log("firing tripleshot");
+      console.log(this.powerups[PowerupType.TripleShot]);
+      const leftVel = Vec2.fromAngle(this.rotation - 0.3, speed);
+      this.game.projectiles.push(
+        new Projectile(this.ctx, nosePos.copy(), leftVel)
+      );
+      const rightVel = Vec2.fromAngle(this.rotation + 0.3, speed);
+      this.game.projectiles.push(
+        new Projectile(this.ctx, nosePos.copy(), rightVel)
+      );
+    }
 
-    this.cookieCannonCapacity -= .1;
+    if (!this.powerups[PowerupType.UnlimitedCannon].isActive) {
+      this.cookieCannonCapacity -= 0.1;
+    }
   }
 
   private triggerOverheat() {
     // TODO play overheat sound
     this.overheat = true;
-    this.timeout = setTimeout(() => {
+    this.overheatTimeout = setTimeout(() => {
       // TODO play cooldown sound
       this.overheat = false;
       this.cookieCannonCapacity = 0;

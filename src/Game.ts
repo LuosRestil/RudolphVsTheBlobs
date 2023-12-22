@@ -68,6 +68,7 @@ export class Game {
     this.projectiles = this.projectiles.filter(
       (projectile) => projectile.isActive
     );
+    this.powerups = this.powerups.filter((powerup) => powerup.isActive);
     this.enemies = this.enemies.filter((enemy) => enemy.isActive);
     this.splats = this.splats.filter((splat) => splat.isActive);
     this.draw(dts);
@@ -77,6 +78,7 @@ export class Game {
       this.level++;
       this.enemies = this.spawnEnemies();
       this.projectiles = [];
+      this.powerups = [];
       this.resetPlayer();
       this.levelUpSound.play();
     }
@@ -129,7 +131,8 @@ export class Game {
     for (let projectile of this.projectiles) {
       for (let enemy of this.enemies) {
         if (circleCircleCollisionDetected(projectile, enemy)) {
-          projectile.isActive = false;
+          if (!this.player.powerups[PowerupType.BlobPiercing].isActive)
+            projectile.isActive = false;
           enemy.requiredHits--;
           this.score += 10 * enemy.stage;
           if (enemy.requiredHits === 0) {
@@ -169,6 +172,14 @@ export class Game {
       }
     }
 
+    for (let powerup of this.powerups) {
+      if (obbCircleCollisionDetected(this.player, powerup)) {
+        this.player.activatePowerup(powerup.type);
+        powerup.isActive = false;
+        // TODO play powerup sound
+      }
+    }
+
     let collisionDetected = false;
     for (let enemy of this.enemies) {
       if (obbCircleCollisionDetected(this.player, enemy)) {
@@ -176,6 +187,7 @@ export class Game {
         break;
       }
     }
+
     if (collisionDetected) {
       this.splats.push(new Splat(this.player.pos.copy(), "crimson", "darkred"));
       this.gameOver = true;
@@ -251,7 +263,8 @@ export class Game {
     this.player.rotation = 0;
     this.player.cookieCannonCapacity = 1;
     this.player.overheat = false;
-    if (this.player.timeout) clearTimeout(this.player.timeout);
+    if (this.player.overheatTimeout) clearTimeout(this.player.overheatTimeout);
+    this.player.powerups = this.player.initializePowerups();
   }
 
   private showScore(): void {
@@ -259,6 +272,7 @@ export class Game {
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = 5;
     this.ctx.textAlign = "right";
+    this.ctx.textBaseline = "middle";
     this.ctx.font = "30px monospace";
     this.ctx.strokeText("Score: " + this.score, this.ctx.canvas.width - 50, 50);
     this.ctx.fillText("Score: " + this.score, this.ctx.canvas.width - 50, 50);
@@ -269,6 +283,7 @@ export class Game {
     this.ctx.strokeStyle = "black";
     this.ctx.lineWidth = 5;
     this.ctx.textAlign = "left";
+    this.ctx.textBaseline = "middle";
     this.ctx.font = "30px monospace";
     this.ctx.strokeText("Level: " + this.level, 50, 50);
     this.ctx.fillText("Level: " + this.level, 50, 50);
