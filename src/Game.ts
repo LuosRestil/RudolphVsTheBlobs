@@ -158,12 +158,14 @@ export class Game {
                   enemy.colors.stroke[0]
                 )
               );
-              this.powerups.push(
-                new Powerup(
-                  enemy.pos.copy(),
-                  randInt(0, Object.keys(PowerupType).length / 2)
-                )
-              );
+              if (Math.random() < 0.1) {
+                this.powerups.push(
+                  new Powerup(
+                    enemy.pos.copy(),
+                    randInt(0, Object.keys(PowerupType).length / 2)
+                  )
+                );
+              }
             }
           } else {
             enemy.ding();
@@ -180,21 +182,11 @@ export class Game {
       }
     }
 
-    let collisionDetected = false;
     for (let enemy of this.enemies) {
       if (obbCircleCollisionDetected(this.player, enemy)) {
-        collisionDetected = true;
+        this.triggerGameOver();
         break;
       }
-    }
-
-    if (collisionDetected) {
-      this.splats.push(new Splat(this.player.pos.copy(), "crimson", "darkred"));
-      this.gameOver = true;
-      this.mainSong.pause();
-      this.mainSong.currentTime = 0;
-      this.playerDeathSound.play();
-      this.gameOverSong.play();
     }
   }
 
@@ -287,5 +279,14 @@ export class Game {
     this.ctx.font = "30px monospace";
     this.ctx.strokeText("Level: " + this.level, 50, 50);
     this.ctx.fillText("Level: " + this.level, 50, 50);
+  }
+
+  private triggerGameOver() {
+    this.splats.push(new Splat(this.player.pos.copy(), "crimson", "darkred"));
+    this.gameOver = true;
+    this.mainSong.pause();
+    this.mainSong.currentTime = 0;
+    this.playerDeathSound.play();
+    this.gameOverSong.play();
   }
 }

@@ -171,11 +171,22 @@ export class Player {
     this.ctx.fillStyle = "black";
     this.ctx.fill();
     // legs
+    this.ctx.strokeStyle = "white";
     this.ctx.fillStyle = "brown";
-    this.ctx.fillRect(0, -this.height / 2 - 10, 5, 10);
-    this.ctx.fillRect(0, this.height / 2, 5, 10);
-    this.ctx.fillRect(-20, -this.height / 2 - 10, 5, 10);
-    this.ctx.fillRect(-20, this.height / 2, 5, 10);
+    this.ctx.save();
+    if (this.sparkles.isActive) {
+      this.ctx.rotate(-0.3);
+    }
+    this.ctx.fillRect(0, -this.height / 2 - 10, 5, 10); // front left
+    this.ctx.fillRect(-20, -this.height / 2 - 10, 5, 10); // back left
+    this.ctx.restore();
+    this.ctx.save();
+    if (this.sparkles.isActive) {
+      this.ctx.rotate(0.3);
+    }
+    this.ctx.fillRect(-20, this.height / 2, 5, 10); // back right
+    this.ctx.fillRect(0, this.height / 2, 5, 10); // front right
+    this.ctx.restore();
     // tail
     this.ctx.fillStyle = "brown";
     this.ctx.beginPath();
