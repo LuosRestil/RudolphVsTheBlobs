@@ -140,7 +140,7 @@ export class Player {
     this.ctx.rotate(this.rotation);
 
     // body
-    this.ctx.fillStyle = "brown";
+    this.ctx.fillStyle = this.powerups[PowerupType.Shield].isActive ? "lightblue" : "brown";
     this.ctx.fillRect(
       -this.width / 2,
       -this.height / 2,
@@ -172,7 +172,7 @@ export class Player {
     this.ctx.fill();
     // legs
     this.ctx.strokeStyle = "white";
-    this.ctx.fillStyle = "brown";
+    this.ctx.fillStyle = this.powerups[PowerupType.Shield].isActive ? "lightblue" : "brown";
     this.ctx.save();
     if (this.sparkles.isActive) {
       this.ctx.rotate(-0.3);
@@ -188,7 +188,7 @@ export class Player {
     this.ctx.fillRect(0, this.height / 2, 5, 10); // front right
     this.ctx.restore();
     // tail
-    this.ctx.fillStyle = "brown";
+    this.ctx.fillStyle = this.powerups[PowerupType.Shield].isActive ? "lightblue" : "brown";
     this.ctx.beginPath();
     this.ctx.arc(-this.width / 2, 0, 5, 0, Math.PI * 2);
     this.ctx.fill();

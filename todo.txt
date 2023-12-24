@@ -6,6 +6,7 @@
     [X] unlimited cookie cannon capacity
 [ ] Pause
 [ ] Sound options (mute, volume?);
+[ ] Idle animation - rotate +/- range 0.3
 
 [ ] Round cooldown bar edges (maybe)
 

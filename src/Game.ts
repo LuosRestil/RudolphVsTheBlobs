@@ -136,37 +136,7 @@ export class Game {
           enemy.requiredHits--;
           this.score += 10 * enemy.stage;
           if (enemy.requiredHits === 0) {
-            enemy.isActive = false;
-            if (enemy.stage < 3) {
-              enemy.pop();
-              for (let i = 0; i < this.enemySplitFactor; i++) {
-                this.enemies.push(
-                  new Enemy(
-                    this.ctx,
-                    enemy.pos.copy(),
-                    enemy.stage + 1,
-                    enemy.scale / 2
-                  )
-                );
-              }
-            } else {
-              enemy.splat();
-              this.splats.push(
-                new Splat(
-                  enemy.pos.copy(),
-                  enemy.colors.fill[0],
-                  enemy.colors.stroke[0]
-                )
-              );
-              if (Math.random() < 0.1) {
-                this.powerups.push(
-                  new Powerup(
-                    enemy.pos.copy(),
-                    randInt(0, Object.keys(PowerupType).length / 2)
-                  )
-                );
-              }
-            }
+            this.destroyEnemy(enemy);
           } else {
             enemy.ding();
           }
@@ -184,7 +154,14 @@ export class Game {
 
     for (let enemy of this.enemies) {
       if (obbCircleCollisionDetected(this.player, enemy)) {
-        this.triggerGameOver();
+        if (this.player.powerups[PowerupType.Shield].isActive) {
+          const shieldPowerup = this.player.powerups[PowerupType.Shield];
+          clearInterval(shieldPowerup.timeout);
+          shieldPowerup.isActive = false;
+          this.destroyEnemy(enemy);
+        } else {
+          this.triggerGameOver();
+        }
         break;
       }
     }
@@ -288,5 +265,39 @@ export class Game {
     this.mainSong.currentTime = 0;
     this.playerDeathSound.play();
     this.gameOverSong.play();
+  }
+
+  private destroyEnemy(enemy: Enemy): void {
+    enemy.isActive = false;
+    if (enemy.stage < 3) {
+      enemy.pop();
+      for (let i = 0; i < this.enemySplitFactor; i++) {
+        this.enemies.push(
+          new Enemy(
+            this.ctx,
+            enemy.pos.copy(),
+            enemy.stage + 1,
+            enemy.scale / 2
+          )
+        );
+      }
+    } else {
+      enemy.splat();
+      this.splats.push(
+        new Splat(
+          enemy.pos.copy(),
+          enemy.colors.fill[0],
+          enemy.colors.stroke[0]
+        )
+      );
+      if (Math.random() < 0.1) {
+        this.powerups.push(
+          new Powerup(
+            enemy.pos.copy(),
+            randInt(0, Object.keys(PowerupType).length / 2)
+          )
+        );
+      }
+    }
   }
 }
