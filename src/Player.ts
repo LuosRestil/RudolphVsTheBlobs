@@ -2,8 +2,8 @@ import { Game } from "./Game";
 import { PowerupType } from "./Powerup";
 import { Projectile } from "./Projectile";
 import { Sparkles } from "./Sparkles";
-import { Vec2 } from "./Vec2";
-import { screenWrap } from "./utils";
+import { Vec2 } from "bz-game-utils";
+import { screenWrap } from "bz-game-utils";
 
 type Keys = {
   up: boolean;

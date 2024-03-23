@@ -1,5 +1,5 @@
-import { Vec2 } from "./Vec2";
-import { randRange } from "./utils";
+import { Vec2 } from "bz-game-utils";
+import { randRange } from "bz-game-utils";
 
 export enum PowerupType {
   TripleShot,

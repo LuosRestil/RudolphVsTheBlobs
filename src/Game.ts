@@ -4,12 +4,12 @@ import { Player } from "./Player";
 import { Powerup, PowerupType } from "./Powerup";
 import { Projectile } from "./Projectile";
 import { Splat } from "./Splat";
-import { Vec2 } from "./Vec2";
+import { Vec2 } from "bz-game-utils";
 import {
   circleCircleCollisionDetected,
   obbCircleCollisionDetected,
   randInt,
-} from "./utils";
+} from "bz-game-utils";
 
 export class Game {
   ctx: CanvasRenderingContext2D;

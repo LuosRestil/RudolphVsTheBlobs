@@ -1,7 +1,7 @@
 import { Game } from "./Game";
-import { Vec2 } from "./Vec2";
+import { Vec2 } from "bz-game-utils";
 import "./style.css";
-import { screenWrap } from "./utils";
+import { screenWrap } from "bz-game-utils";
 
 let gameStarted = false;
 

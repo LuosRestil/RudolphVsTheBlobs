@@ -1,4 +1,4 @@
-import { Vec2 } from "./Vec2";
+import { Vec2 } from "bz-game-utils";
 
 export class Splat {
   pos: Vec2;

@@ -1,5 +1,5 @@
-import { Vec2 } from "./Vec2";
-import { randRange, screenWrap } from "./utils";
+import { Vec2 } from "bz-game-utils";
+import { randRange, screenWrap } from "bz-game-utils";
 
 export class Enemy {
   ctx: CanvasRenderingContext2D;

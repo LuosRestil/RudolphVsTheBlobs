@@ -1,8 +1,12 @@
-[ ] Powerups
+[X] Powerups
     [X] triple shot
     [X] faster cookies
     [X] blob-piercing cookies
-    [ ] shield
+    [X] shield
+        [ ] momentary invincibility after sheild breaks
+            [ ] flash animation
+        [ ] indicate nearing end of shield
+        [ ] consider shield working like mario star instead
     [X] unlimited cookie cannon capacity
 [ ] Pause
 [ ] Sound options (mute, volume?);
